@@ -1,5 +1,5 @@
 s3_conf:
-  s3_bucket: chaitanya-pyspark
+  s3_bucket: my-bigdata14
 
 sftp_conf:
     filetype: csv
