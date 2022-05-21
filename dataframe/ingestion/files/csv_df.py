@@ -68,6 +68,8 @@ if __name__ == '__main__':
         .option("delimiter", "~") \
         .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/fin")
 
+    spark.read.csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/fin").show()
+
     spark.stop()
 
 # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" dataframe/ingestion/files/csv_df.py
