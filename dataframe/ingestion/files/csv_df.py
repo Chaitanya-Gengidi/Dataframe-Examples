@@ -68,7 +68,8 @@ if __name__ == '__main__':
         .option("delimiter", "~") \
         .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/fin")
 
-    spark.read.csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/fin").show()
+    spark.read.option("header", "true") \
+        .option("delimiter", "~").csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/fin").show()
 
     spark.stop()
 
