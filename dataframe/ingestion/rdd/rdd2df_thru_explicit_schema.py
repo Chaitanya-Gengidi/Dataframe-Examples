@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession, Row
-from pyspark.sql.functions import unix_timestamp, approx_count_distinct, sum
+from pyspark.sql.functions import unix_timestamp, approx_count_distinct, sum, col, countDistinct
 from pyspark.sql.types import StructType, StructField, IntegerType, LongType, DoubleType, StringType, TimestampType
 import os.path
 import yaml
@@ -62,11 +62,13 @@ if __name__ == '__main__':
 
     print("# of records = " + str(txn_fct_df.count()))
     print("# of merchants = " + str(txn_fct_df.select(txn_fct_df["merchant_id"]).distinct().count()))
+    print("# of merchants = " + str(txn_fct_df.select("merchant_id").distinct().count()))
+    print("# of merchants = " + str(txn_fct_df.select(txn_fct_df.merchant_id).distinct().count()))
+    print("# of merchants = " + str(txn_fct_df.select(col("merchant_id")).distinct().count()))
 
     txnAggDf = txn_fct_df \
-        .repartition(10, txn_fct_df["merchant_id"]) \
         .groupBy("merchant_id") \
-        .agg(sum("amount"), approx_count_distinct("status"))
+        .agg(sum("amount"), countDistinct("status"))
 
     txnAggDf.show(5, False)
 
