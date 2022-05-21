@@ -33,6 +33,7 @@ if __name__ == '__main__':
     nyc_omo_df = spark.read \
         .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/NYC_OMO") \
         .repartition(5)
+    nyc_omo_df = nyc_omo_df.withColumn('OMOCreateDate', nyc_omo_df.OMOCreateDate.cast('date'))
 
     print("# of records = " + str(nyc_omo_df.count()))
     print("# of partitions = " + str(nyc_omo_df.rdd.getNumPartitions()))
@@ -74,8 +75,8 @@ if __name__ == '__main__':
         .show(5)
 
     omo_daily_freq \
-        .repartition(5) \
         .write \
+        .partitionBy('OMOCreateDate') \
         .mode("overwrite") \
         .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/nyc_omo_data")
 
