@@ -56,6 +56,9 @@ if __name__ == '__main__':
         .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/finances.csv") \
         .toDF("id", "has_debt", "has_financial_dependents", "has_student_loans", "income")
 
+    # write a function to calculate bonu (10% of income)
+    # write another function and test the bonus value, 100 10, 200 20, ..
+
     print("Number of partitions = " + str(fin_df.rdd.getNumPartitions()))
     finance_df.printSchema()
     finance_df.show()
