@@ -77,6 +77,10 @@ if __name__ == '__main__':
 
     employee_df_temp = companies_df \
         .select("company", explode("employees").alias("employee"))
+
+    companies_df \
+        .select("company", explode_outer("employees").alias("employee")) \
+        .show()
     employee_df_temp.show()
     companies_df \
         .select("company", posexplode("employees").alias("employeePosition", "employee")) \
